@@ -17,13 +17,21 @@ class Grid:
 
         self._grid = [[Cell(x, y) for y in range(height)] for x in range(width)]
 
-        self.start = self[start[0], start[1]]
+        self.start = self[start]
         self.start.start = True
-        self.end = self[end[0], end[1]]
+        self.end = self[end]
         self.end.end = True
 
-    def __getitem__(self, x: int, y: int) -> Cell:
+        for column in self._grid:
+            for cell in column:
+                cell.add_neighbours(self)
+
+    def __getitem__(self, pos: Tuple[int, int]) -> Cell:
+        x, y = pos
         return self._grid[x][y]
+
+    def __iter__(self) -> list:
+        return sum(self._grid, [])
 
     def __str__(self) -> str:
         return (
@@ -63,5 +71,11 @@ class Grid:
 
             self._grid.append(line)
 
-        self._grid = zip(*self._grid)  # invert lines and columns
+        # invert lines and columns
+        self._grid = [list(column) for column in zip(*self._grid)]
+
+        for column in self._grid:
+            for cell in column:
+                cell.add_neighbours(self)
+
         return self
