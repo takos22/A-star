@@ -8,6 +8,7 @@ black = "*"
 flake8 = "*"
 
 [packages]
+pygame = "*"
 
 [requires]
 python_version = "3.7"
