@@ -23,6 +23,10 @@ class AStar:
         while last.last is not None:
             last = last.last
             path.insert(0, last)
+
+        for cell in path:
+            cell.path = True
+
         return path
 
     def next(self) -> Cell:
@@ -30,7 +34,7 @@ class AStar:
             if cell in self.closed:
                 continue
 
-            self.open.add(cell)
+            self.open.add(cell.open())
 
             heuristic = (
                 self.current.distance_from_start + 1 + self.heuristic(cell)
@@ -42,8 +46,8 @@ class AStar:
                 cell.heuristic = heuristic
                 cell.last = self.current
 
+        self.closed.add(self.current.close())
         self.open.remove(self.current)
-        self.closed.add(self.current)
 
         self.current = min(
             self.open,

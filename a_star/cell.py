@@ -20,6 +20,9 @@ class Cell:
         self.distance_from_start = 0 if self.start else None
         self.distance_to_end = None
         self.heuristic = None
+        self.opened = False
+        self.closed = False
+        self.path = False
 
     def __str__(self) -> str:
         if self.obstacle:
@@ -28,6 +31,12 @@ class Cell:
             return "O"
         elif self.end:
             return "X"
+        elif self.path:
+            return "+"
+        elif self.closed:
+            return "*"
+        elif self.opened:
+            return "."
         return " "
 
     def __repr__(self) -> str:
@@ -47,3 +56,12 @@ class Cell:
             self.neighbours.add(grid[self.x, self.y + 1])  # bottom
 
         return self.neighbours
+
+    def open(self) -> "Cell":
+        self.opened = True
+        return self
+
+    def close(self) -> "Cell":
+        self.opened = False
+        self.closed = True
+        return self
