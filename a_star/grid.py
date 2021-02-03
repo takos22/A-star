@@ -1,4 +1,4 @@
-from typing import Tuple
+from typing import Tuple, List
 from json import load
 
 from .cell import Cell
@@ -11,27 +11,37 @@ class Grid:
         height: int,
         start: Tuple[int, int],
         end: Tuple[int, int],
+        obstacles: List[Tuple[int, int]] = [],
     ):
         self.width = width
         self.height = height
 
-        self._grid = [[Cell(x, y) for y in range(height)] for x in range(width)]
+        self._grid = [
+            [
+                Cell(
+                    x,
+                    y,
+                    obstacle=((x, y) in obstacles),
+                    start=((x, y) == start),
+                    end=((x, y) == end),
+                )
+                for y in range(height)
+            ]
+            for x in range(width)
+        ]
 
         self.start = self[start]
-        self.start.start = True
         self.end = self[end]
-        self.end.end = True
 
-        for column in self._grid:
-            for cell in column:
-                cell.add_neighbours(self)
+        for cell in self:
+            cell.add_neighbours(self)
 
     def __getitem__(self, pos: Tuple[int, int]) -> Cell:
         x, y = pos
         return self._grid[x][y]
 
     def __iter__(self) -> list:
-        return sum(self._grid, [])
+        return iter(sum(self._grid, []))
 
     def __str__(self) -> str:
         return (
@@ -44,6 +54,13 @@ class Grid:
             + "\n"
             + "#" * (self.width + 2)
         )
+
+    def reset(self):
+        for cell in self:
+            cell.reset()
+
+        for cell in self:
+            cell.add_neighbours(self)
 
     @classmethod
     def from_json(cls, filename: str = "grid.json") -> "Grid":

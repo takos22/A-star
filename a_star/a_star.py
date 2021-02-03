@@ -18,11 +18,7 @@ class AStar:
         while self.current != self.grid.end:
             self.next()
 
-        last = self.current.last
-        path = [last, self.current]
-        while last.last is not None:
-            last = last.last
-            path.insert(0, last)
+        path = self.get_path_to_current()
 
         for cell in path:
             cell.path = True
@@ -56,5 +52,15 @@ class AStar:
 
         return self.current
 
-    def heuristic(self, cell: Cell) -> float:
+    def get_path_to_current(self) -> List[Cell]:
+        last = self.current.last
+        path = [last, self.current]
+
+        while last.last is not None:
+            last = last.last
+            path.insert(0, last)
+
+        return path
+
+    def heuristic(self, cell: Cell) -> int:
         return abs(self.grid.end.x - cell.x) + abs(self.grid.end.y - cell.y)

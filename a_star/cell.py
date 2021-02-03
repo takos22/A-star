@@ -1,3 +1,6 @@
+import pygame
+
+
 class Cell:
     def __init__(
         self,
@@ -65,3 +68,31 @@ class Cell:
         self.opened = False
         self.closed = True
         return self
+
+    def draw(self, screen: pygame.Surface):
+        color = (0, 0, 0)
+        if self.obstacle:
+            color = (255, 255, 255)
+        elif self.start:
+            color = (255, 0, 0)
+        elif self.end:
+            color = (0, 255, 0)
+        elif self.path:
+            color = (0, 0, 255)
+        elif self.closed:
+            color = (0, 255, 255)
+        elif self.opened:
+            color = (255, 127, 0)
+        pygame.draw.rect(
+            screen, color, pygame.Rect(self.x * 16, self.y * 16, 16, 16)
+        )
+
+    def reset(self):
+        self.neighbours = set()
+        self.last = None
+        self.distance_from_start = 0 if self.start else None
+        self.distance_to_end = None
+        self.heuristic = None
+        self.opened = False
+        self.closed = False
+        self.path = False
