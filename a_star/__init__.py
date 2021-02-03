@@ -1,2 +1,3 @@
-from .grid import Grid
-from .cell import Cell
+from .cell import Cell  # noqa: F401
+from .grid import Grid  # noqa: F401
+from .a_star import AStar  # noqa: F401

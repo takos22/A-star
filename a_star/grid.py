@@ -65,6 +65,7 @@ class Grid:
                 if json_cell == 2:
                     self.start = cell
                     cell.start = True
+                    cell.distance_from_start = 0
                 elif json_cell == 3:
                     self.end = cell
                     cell.end = True

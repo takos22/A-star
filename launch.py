@@ -1,3 +1,6 @@
-from a_star import Grid
+from a_star import Grid, AStar
 
-print(Grid.from_json())
+grid = Grid.from_json("grid.json")
+print(grid)
+a_star = AStar(grid)
+print(a_star.find_shortest_path())

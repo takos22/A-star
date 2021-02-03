@@ -16,6 +16,10 @@ class Cell:
         self.end = end
 
         self.neighbours = set()
+        self.last = None
+        self.distance_from_start = 0 if self.start else None
+        self.distance_to_end = None
+        self.heuristic = None
 
     def __str__(self) -> str:
         if self.obstacle:
