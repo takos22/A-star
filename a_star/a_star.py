@@ -14,9 +14,11 @@ class AStar:
         self.open = {self.current}
         self.closed = set()
 
-    def find_shortest_path(self) -> List[Cell]:
+    def find_shortest_path(self, verbose: bool = False) -> List[Cell]:
         while self.current != self.grid.end:
             self.next()
+            if verbose:
+                print(self.grid)
 
         path = self.get_path_to_current()
 

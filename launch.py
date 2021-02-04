@@ -1,4 +1,5 @@
-from a_star import Window
+from a_star import Window, Grid, AStar
 
-window = Window()
-window.run()
+grid = Grid.from_json()
+# AStar(grid).find_shortest_path(True)
+Window(grid).run()
