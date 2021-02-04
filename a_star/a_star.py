@@ -32,8 +32,8 @@ class AStar:
 
             self.open.add(cell.open())
 
-            heuristic = (
-                self.current.distance_from_start + 1 + self.heuristic(cell)
+            heuristic = self.heuristic(cell) + 1.5 * (
+                self.current.distance_from_start + 1
             )
 
             if cell.heuristic is None or heuristic < cell.heuristic:
@@ -63,4 +63,9 @@ class AStar:
         return path
 
     def heuristic(self, cell: Cell) -> int:
-        return abs(self.grid.end.x - cell.x) + abs(self.grid.end.y - cell.y)
+        return (
+            ((self.grid.end.x - cell.x) ** 2 + (self.grid.end.y - cell.y) ** 2)
+            ** 0.5
+            + abs(self.grid.end.x - cell.x)
+            + abs(self.grid.end.y - cell.y)
+        )
